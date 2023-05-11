@@ -5,16 +5,22 @@ import fileUpload from "express-fileupload";
 import path from 'path';
 import helmet from "helmet";
 import cors from "cors";
+import asignarDB from "./middleware/asingarDB";
+
+
 
 //imported port
 import { PORT } from "./config";
 
 //imported routes
-import taskRoutes from "./routes/tasks.routes";
-import userRoutes from "./routes/users.routes";
+import authRoutes from "./routes/auth.routes";
 
 //app declaration
 const app = express();
+
+
+//asinga la db
+app.use(asignarDB);
 
 //app setting port
 app.set('port', PORT);
@@ -33,7 +39,6 @@ app.use(
   );
 
 app.use(express.static(path.join(__dirname, '../client/build')));
-app.use("/api", taskRoutes);
-app.use("/api", userRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/*",(req,res)=>res.status(404).send("bad route"))
 export default app;
